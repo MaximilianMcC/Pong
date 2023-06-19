@@ -14,7 +14,7 @@ class Paddle
 	private float height = 200f;
 
 	// Create a new paddle
-	public Paddle(PaddleType paddleType, Color color, Game game)
+	public Paddle(PaddleType paddleType, Game game)
 	{
 		this.game = game;
 		this.paddleType = paddleType;
