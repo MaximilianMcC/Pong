@@ -4,14 +4,15 @@ using SFML.Window;
 
 class Paddle
 {
+	public FloatRect Bounds;
 	private Game game;
-	private RectangleShape sprite;
 	private float position;
+	private float height = 200f;
+	private float width = 25f;
+	private RectangleShape sprite;
 	private float x;
 	private float speed = 727f;
 	private PaddleType paddleType;
-	private float width = 25f;
-	private float height = 200f;
 
 	// Create a new paddle
 	public Paddle(PaddleType paddleType, Game game)
@@ -67,6 +68,7 @@ class Paddle
 		// Update the position
 		if (!Collision(newPosition)) this.position = newPosition;
 		this.sprite.Position = new Vector2f(x, position);
+		this.Bounds = sprite.GetGlobalBounds(); //TODO: This might not be right
 
 	}
 

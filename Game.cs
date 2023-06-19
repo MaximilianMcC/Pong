@@ -6,6 +6,8 @@ class Game
 {
 	public RenderWindow Window;
 	public float DeltaTime;
+	public Paddle LeftPaddle;
+	public Paddle RightPaddle;
 	
 	public void Run()
 	{
@@ -18,8 +20,8 @@ class Game
 		Clock deltaTimeClock = new Clock();
 
 		// Create both paddles
-		Paddle leftPaddle = new Paddle(PaddleType.LEFT, this);
-		Paddle rightPaddle = new Paddle(PaddleType.RIGHT, this);
+		LeftPaddle = new Paddle(PaddleType.LEFT, this);
+		RightPaddle = new Paddle(PaddleType.RIGHT, this);
 
 		// Create the ball
 		Ball ball = new Ball(this);
@@ -34,8 +36,8 @@ class Game
 
 
 			// Update the paddles and ball
-			leftPaddle.Update();
-			rightPaddle.Update();
+			LeftPaddle.Update();
+			RightPaddle.Update();
 			ball.Update();
 
 
@@ -43,8 +45,8 @@ class Game
 			Window.Clear(new Color(0x202124ff));
 			
 			// Draw the paddles
-			leftPaddle.Render();
-			rightPaddle.Render();
+			LeftPaddle.Render();
+			RightPaddle.Render();
 			ball.Render();
 
 			// Show the new frame
