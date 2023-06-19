@@ -30,6 +30,7 @@ class Ball
 	public void Update()
 	{
 		Movement();
+		Collision();
 	}
 
 	public void Render()
@@ -53,30 +54,40 @@ class Ball
 		// Update the position
 		position = newPosition;
 		sprite.Position = position;
+	}
 
-
-
-		// Check for collision with the top boundary
-		// TODO: Put this in a method
-		if (newPosition.Y < 0 || newPosition.Y + size > game.Window.Size.Y)
+	// Check for if the ball is going to hit something, and reflect the ball if it is
+	private void Collision()
+	{
+		// Check for collision on the window and paddles
 		{
-			// Reverse/flip/mirror the direction on the y
-			direction.Y = -direction.Y;
+			// Check for collision on the top/bottom of the screen
+			if ((position.Y < 0) || ((position.Y + size) > game.Window.Size.Y))
+			{
+				// Reverse/flip/mirror the direction on the y
+				direction.Y = -direction.Y;
+			}
+
+			// Check for if the ball collides with the left paddle
+			if (sprite.GetGlobalBounds().Intersects(game.LeftPaddle.Bounds))
+			{
+				// Reverse/flip/mirror the direction on the x
+				direction.X = -direction.X;
+			}
+
+			// Check for if the ball collides with the right paddle
+			if (sprite.GetGlobalBounds().Intersects(game.RightPaddle.Bounds))
+			{
+				// Reverse/flip/mirror the direction on the x
+				direction.X = -direction.X;
+			}
 		}
 
-
-		// Check for if the ball collides with the left paddle
-		if (sprite.GetGlobalBounds().Intersects(game.LeftPaddle.Bounds))
+		// Check for collision on the x for if the game is over
 		{
-			// Reverse/flip/mirror the direction on the x
-			direction.X = -direction.X;
+			if (position.X < 0) ScoreCounter.UpdateScore(PaddleType.LEFT);
+			if ((position.X + size) > game.Window.Size.X) ScoreCounter.UpdateScore(PaddleType.RIGHT);
 		}
 
-		// Check for if the ball collides with the right paddle
-		if (sprite.GetGlobalBounds().Intersects(game.RightPaddle.Bounds))
-		{
-			// Reverse/flip/mirror the direction on the x
-			direction.X = -direction.X;
-		}
 	}
 }
