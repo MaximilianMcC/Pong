@@ -29,6 +29,7 @@ class Ball
 	public void Update()
 	{
 		Movement();
+		if (Collision(position)) FlipDirection();
 	}
 
 	public void Render()
@@ -64,6 +65,13 @@ class Ball
 		movementDirection = new Vector2f(top, left);
 	}
 
+	// Flip the direction of the ball
+	public void FlipDirection()
+	{
+		// Reverse the movement vector
+		movementDirection = -movementDirection;
+	}
+
 
 	// Move the ball according to the movement vector
 	private void Movement()
@@ -78,5 +86,17 @@ class Ball
 		// Update the position
 		position = newPosition;
 		sprite.Position = position;
+	}
+
+	// Check for collision
+	private bool Collision(Vector2f newPosition)
+	{
+		// Check for if the paddle is about to hit the window bounds on the X
+		if ((newPosition.Y < 0) || ((newPosition.Y + size) > game.Window.Size.Y)) return true;
+
+		// Check for if the paddle is about to hit the window bounds on the Y
+		if ((newPosition.X < 0) || ((newPosition.X + size) > game.Window.Size.X)) return true;
+
+		return false;
 	}
 }
