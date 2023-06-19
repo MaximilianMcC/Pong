@@ -25,7 +25,6 @@ class Game
 
 		// Create the ball
 		Ball ball = new Ball(this);
-		ball.Begin();
 
 		// Game
 		while (Window.IsOpen)
@@ -44,13 +43,14 @@ class Game
 			// Clear the window
 			Window.Clear(new Color(0x202124ff));
 			
+			// Draw the line down the middle
+			DrawLine();
+			
 			// Draw the paddles
 			LeftPaddle.Render();
 			RightPaddle.Render();
 			ball.Render();
 
-			// Draw the line down the middle
-			DrawLine();
 
 			// Show the new frame
 			Window.Display();

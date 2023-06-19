@@ -68,8 +68,7 @@ class Paddle
 		// Update the position
 		if (!Collision(newPosition)) this.position = newPosition;
 		this.sprite.Position = new Vector2f(x, position);
-		this.Bounds = sprite.GetGlobalBounds(); //TODO: This might not be right
-
+		this.Bounds = sprite.GetGlobalBounds();
 	}
 
 	private bool Collision(float newPosition)
