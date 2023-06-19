@@ -42,8 +42,9 @@ class Game
 
 			// Clear the window
 			Window.Clear(new Color(0x202124ff));
-			
-			// Draw the line down the middle
+
+			// Draw the line, and scores
+			ScoreCounter.DrawScores(Window);
 			DrawLine();
 			
 			// Draw the paddles
