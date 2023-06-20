@@ -8,8 +8,9 @@ class Ball
 	private float size = 15;
 	private RectangleShape sprite;
 	private Vector2f position;
-	private float speed = 15f;
 	private Vector2f direction;
+	private float speed = 15f;
+	private float speedMultiplier;
 
 	public Ball(Game game)
 	{
@@ -39,14 +40,25 @@ class Ball
 		position = new Vector2f(((game.Window.Size.X - size) / 2), ((game.Window.Size.Y - size) / 2));
 		sprite.Position = position;
 
-		// Get the initial direction
-		direction = new Vector2f(speed, -speed);
+		// Create a random "launch" vector that will make the ball
+		// travel to the top-left, top-right, bottom-left, or bottom-right
+		speedMultiplier = 1f;
+		Random random = new Random();
+
+		// Decide if its going right/up (true) or down/left (false)
+		bool x = random.NextSingle() >= 0.5;
+		bool y = random.NextSingle() >= 0.5;
+
+		// Create the vector
+		float left = x ? speed : -speed;
+		float top = y ? speed : -speed;
+		direction = new Vector2f(left, top) * speedMultiplier;
 	}
 
 
 	private void Movement()
 	{
-		float movementSpeed = speed * game.DeltaTime;
+		float movementSpeed = (speed * speedMultiplier) * game.DeltaTime;
 		Vector2f newPosition = position;
 
 		// Move the ball using the velocity
@@ -61,12 +73,14 @@ class Ball
 	private void Collision()
 	{
 		// Check for collision on the window and paddles
+		//TODO: Don't write the flip and speed change every time. Put in method
 		{
 			// Check for collision on the top/bottom of the screen
 			if ((position.Y < 0) || ((position.Y + size) > game.Window.Size.Y))
 			{
 				// Reverse/flip/mirror the direction on the y
 				direction.Y = -direction.Y;
+				speedMultiplier += 0.08f;
 			}
 
 			// Check for if the ball collides with the left paddle
@@ -74,6 +88,7 @@ class Ball
 			{
 				// Reverse/flip/mirror the direction on the x
 				direction.X = -direction.X;
+				speedMultiplier += 0.08f;
 			}
 
 			// Check for if the ball collides with the right paddle
@@ -81,6 +96,7 @@ class Ball
 			{
 				// Reverse/flip/mirror the direction on the x
 				direction.X = -direction.X;
+				speedMultiplier += 0.08f;
 			}
 		}
 
