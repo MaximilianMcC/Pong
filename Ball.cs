@@ -43,13 +43,13 @@ class Ball
 
 	public void SpawnBall()
 	{
-		// Put the sprite in the middle of the game
+		// Put the sprite in the middle of the game and reset the speed
 		position = new Vector2f(((game.Window.Size.X - size) / 2), ((game.Window.Size.Y - size) / 2));
 		sprite.Position = position;
-
-		// Create a random "launch" vector that will make the ball
-		// travel to the top-left, top-right, bottom-left, or bottom-right
 		speedMultiplier = 1f;
+
+		// Create a random launch vector that will make the ball
+		// travel to the top-left, top-right, bottom-left, or bottom-right
 		Random random = new Random();
 
 		// Decide if its going right/up (true) or down/left (false)
@@ -65,10 +65,11 @@ class Ball
 
 	private void Movement()
 	{
+		// Calculate movement stuff
 		float movementSpeed = (speed * speedMultiplier) * game.DeltaTime;
 		Vector2f newPosition = position;
 
-		// Move the ball using the velocity
+		// Move the ball using the direction vector
 		newPosition += (direction * movementSpeed);
 
 		// Update the position
@@ -95,6 +96,10 @@ class Ball
 			// Check for if the ball collides with the left paddle
 			if (sprite.GetGlobalBounds().Intersects(game.LeftPaddle.Bounds))
 			{
+				// Move the ball to be a few pixels off of the paddle
+				// to avoid triggering the direction flip multiple times
+				position.X += 5;
+
 				// Make the ball bounce
 				FlipDirection();
 			}
@@ -102,6 +107,10 @@ class Ball
 			// Check for if the ball collides with the right paddle
 			if (sprite.GetGlobalBounds().Intersects(game.RightPaddle.Bounds))
 			{
+				// Move the ball to be a few pixels off of the paddle
+				// to avoid triggering the direction flip multiple times
+				position.X -= 5;
+
 				// Make the ball bounce
 				FlipDirection();
 			}
