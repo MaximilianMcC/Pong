@@ -84,8 +84,12 @@ class Ball
 			// Check for collision on the top/bottom of the screen
 			if ((position.Y < 0) || ((position.Y + size) > game.Window.Size.Y))
 			{
-				// Make the ball bounce
-				FlipDirection();
+				// Reverse/flip/mirror the direction on the y
+				direction.Y = -direction.Y;
+				speedMultiplier += 0.08f;
+
+				// Play a sound effect
+				collisionSound.Play();
 			}
 
 			// Check for if the ball collides with the left paddle
