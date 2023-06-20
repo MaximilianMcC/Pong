@@ -6,7 +6,7 @@ class ScoreCounter
 {
 	private static int leftScore = 0;
 	private static int rightScore = 0;
-	private static Font font = new Font("./EndlessBossBattleRegular.ttf");
+	private static Font font = new Font("./Assets/fonts/EndlessBossBattleRegular.ttf");
 
 	// Update the scores
 	public static void UpdateScore(PaddleType paddle)
