@@ -8,6 +8,7 @@ class Game
 	public float DeltaTime;
 	public Paddle LeftPaddle;
 	public Paddle RightPaddle;
+	public Ball Ball;
 	
 	public void Run()
 	{
@@ -23,8 +24,8 @@ class Game
 		LeftPaddle = new Paddle(PaddleType.LEFT, this);
 		RightPaddle = new Paddle(PaddleType.RIGHT, this);
 
-		// Create the ball
-		Ball ball = new Ball(this);
+		Ball = new Ball(this);
+		Ball.SpawnBall();
 
 		// Game
 		while (Window.IsOpen)
@@ -37,7 +38,7 @@ class Game
 			// Update the paddles and ball
 			LeftPaddle.Update();
 			RightPaddle.Update();
-			ball.Update();
+			Ball.Update();
 
 
 			// Clear the window
@@ -50,7 +51,7 @@ class Game
 			// Draw the paddles
 			LeftPaddle.Render();
 			RightPaddle.Render();
-			ball.Render();
+			Ball.Render();
 
 
 			// Show the new frame
@@ -60,7 +61,7 @@ class Game
 
 
 
-
+	// Draw a dotted/dashed line down the middle of the screen
 	private void DrawLine()
 	{
 		// Make the rectangle line thing to draw
@@ -78,5 +79,18 @@ class Game
 			Window.Draw(dash);
 			y += size * 2;
 		}
+	}
+
+
+	// Start the game again
+	public void NewGame(PaddleType paddle)
+	{
+		// Update the players score
+		ScoreCounter.UpdateScore(paddle);
+
+		// Spawn in a new ball and reset the paddle locations
+		Ball.SpawnBall();
+		LeftPaddle.ResetPosition();
+		RightPaddle.ResetPosition();
 	}
 }

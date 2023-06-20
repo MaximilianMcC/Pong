@@ -25,10 +25,10 @@ class ScoreCounter
 
 	// Draw scores
 	//TODO: Don't get the window as an argument
+	// TODO: Don't create a new text object every single time
 	public static void DrawScores(RenderWindow window)
 	{
 		// Create the left score text
-		// TODO: Don't create a new text object every single time
 		Text leftText = new Text(leftScore.ToString(), font, 150);
 		leftText.FillColor = new Color(0x17181aff);
 		leftText.Origin = new Vector2f((leftText.GetGlobalBounds().Width / 2), (leftText.GetGlobalBounds().Height / 2));

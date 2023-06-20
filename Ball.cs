@@ -18,13 +18,6 @@ class Ball
 		// Create the sprite
 		this.sprite = new RectangleShape(new Vector2f(size, size));
 		sprite.FillColor = new Color(0xf1f1f1ff);
-		
-		// Put the sprite in the middle of the game
-		position = new Vector2f(((game.Window.Size.X - size) / 2), ((game.Window.Size.Y - size) / 2));
-		sprite.Position = position;
-
-		// Set the initial direction to start the game
-		direction = new Vector2f(speed, -speed);
 	}
 
 	public void Update()
@@ -40,7 +33,15 @@ class Ball
 
 
 
+	public void SpawnBall()
+	{
+		// Put the sprite in the middle of the game
+		position = new Vector2f(((game.Window.Size.X - size) / 2), ((game.Window.Size.Y - size) / 2));
+		sprite.Position = position;
 
+		// Get the initial direction
+		direction = new Vector2f(speed, -speed);
+	}
 
 
 	private void Movement()
@@ -85,8 +86,17 @@ class Ball
 
 		// Check for collision on the x for if the game is over
 		{
-			if (position.X < 0) ScoreCounter.UpdateScore(PaddleType.LEFT);
-			if ((position.X + size) > game.Window.Size.X) ScoreCounter.UpdateScore(PaddleType.RIGHT);
+			// The ball hits the left side
+			if (position.X < 0)
+			{
+				game.NewGame(PaddleType.RIGHT);
+			}
+
+			// The ball hits the right side
+			if ((position.X + size) > game.Window.Size.X)
+			{
+				game.NewGame(PaddleType.LEFT);
+			}
 		}
 
 	}

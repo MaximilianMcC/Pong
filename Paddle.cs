@@ -26,6 +26,7 @@ class Paddle
 		// Set the position
 		if (paddleType == PaddleType.LEFT) this.x = 0;
 		else if (paddleType == PaddleType.RIGHT) this.x = game.Window.Size.X - width;
+		ResetPosition();
 	}
 
 	public void Update()
@@ -40,7 +41,11 @@ class Paddle
 
 
 
-
+	public void ResetPosition()
+	{
+		this.position = (game.Window.Size.Y - height) / 2;
+		this.sprite.Position = new Vector2f(x, position);
+	}
 
 	private void Movement()
 	{
