@@ -1,6 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using SFML.Audio;
 
 class Ball
 {
@@ -11,6 +12,8 @@ class Ball
 	private Vector2f direction;
 	private float speed = 15f;
 	private float speedMultiplier;
+	private Sound collisionSound;
+	private Sound deathSound;
 
 	public Ball(Game game)
 	{
@@ -19,6 +22,10 @@ class Ball
 		// Create the sprite
 		this.sprite = new RectangleShape(new Vector2f(size, size));
 		sprite.FillColor = new Color(0xf1f1f1ff);
+
+		// Create the sound effects
+		collisionSound = new Sound(new SoundBuffer("./Assets/sounds/collision.wav"));
+		deathSound = new Sound(new SoundBuffer("./Assets/sounds/die.wav"));
 	}
 
 	public void Update()
@@ -81,6 +88,9 @@ class Ball
 				// Reverse/flip/mirror the direction on the y
 				direction.Y = -direction.Y;
 				speedMultiplier += 0.08f;
+
+				// Play a sound effect
+				collisionSound.Play();
 			}
 
 			// Check for if the ball collides with the left paddle
@@ -89,6 +99,9 @@ class Ball
 				// Reverse/flip/mirror the direction on the x
 				direction.X = -direction.X;
 				speedMultiplier += 0.08f;
+
+				// Play a sound effect
+				collisionSound.Play();
 			}
 
 			// Check for if the ball collides with the right paddle
@@ -97,6 +110,9 @@ class Ball
 				// Reverse/flip/mirror the direction on the x
 				direction.X = -direction.X;
 				speedMultiplier += 0.08f;
+
+				// Play a sound effect
+				collisionSound.Play();
 			}
 		}
 
@@ -106,12 +122,14 @@ class Ball
 			if (position.X < 0)
 			{
 				game.NewGame(PaddleType.RIGHT);
+				deathSound.Play();
 			}
 
 			// The ball hits the right side
 			if ((position.X + size) > game.Window.Size.X)
 			{
 				game.NewGame(PaddleType.LEFT);
+				deathSound.Play();
 			}
 		}
 
