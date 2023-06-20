@@ -80,39 +80,26 @@ class Ball
 	private void Collision()
 	{
 		// Check for collision on the window and paddles
-		//TODO: Don't write the flip and speed change every time. Put in method
 		{
 			// Check for collision on the top/bottom of the screen
 			if ((position.Y < 0) || ((position.Y + size) > game.Window.Size.Y))
 			{
-				// Reverse/flip/mirror the direction on the y
-				direction.Y = -direction.Y;
-				speedMultiplier += 0.08f;
-
-				// Play a sound effect
-				collisionSound.Play();
+				// Make the ball bounce
+				FlipDirection();
 			}
 
 			// Check for if the ball collides with the left paddle
 			if (sprite.GetGlobalBounds().Intersects(game.LeftPaddle.Bounds))
 			{
-				// Reverse/flip/mirror the direction on the x
-				direction.X = -direction.X;
-				speedMultiplier += 0.08f;
-
-				// Play a sound effect
-				collisionSound.Play();
+				// Make the ball bounce
+				FlipDirection();
 			}
 
 			// Check for if the ball collides with the right paddle
 			if (sprite.GetGlobalBounds().Intersects(game.RightPaddle.Bounds))
 			{
-				// Reverse/flip/mirror the direction on the x
-				direction.X = -direction.X;
-				speedMultiplier += 0.08f;
-
-				// Play a sound effect
-				collisionSound.Play();
+				// Make the ball bounce
+				FlipDirection();
 			}
 		}
 
@@ -133,5 +120,16 @@ class Ball
 			}
 		}
 
+	}
+
+
+	private void FlipDirection()
+	{
+		// Reverse/flip/mirror the direction on the x
+		direction.X = -direction.X;
+		speedMultiplier += 0.08f;
+
+		// Play a sound effect
+		collisionSound.Play();
 	}
 }
