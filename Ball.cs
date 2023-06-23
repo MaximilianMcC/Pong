@@ -96,23 +96,15 @@ class Ball
 			// Check for if the ball collides with the left paddle
 			if (sprite.GetGlobalBounds().Intersects(game.LeftPaddle.Bounds))
 			{
-				// Move the ball to be a few pixels off of the paddle
-				// to avoid triggering the direction flip multiple times
-				position.X += 5;
-
 				// Make the ball bounce
-				FlipDirection();
+				FlipDirection(PaddleType.LEFT);
 			}
 
 			// Check for if the ball collides with the right paddle
 			if (sprite.GetGlobalBounds().Intersects(game.RightPaddle.Bounds))
 			{
-				// Move the ball to be a few pixels off of the paddle
-				// to avoid triggering the direction flip multiple times
-				position.X -= 5;
-
 				// Make the ball bounce
-				FlipDirection();
+				FlipDirection(PaddleType.RIGHT);
 			}
 		}
 
@@ -136,9 +128,31 @@ class Ball
 	}
 
 
-	private void FlipDirection()
+	private void FlipDirection(PaddleType paddleType)
 	{
-		// Reverse/flip/mirror the direction on the x
+		// Get the paddle
+		Paddle paddle = game.LeftPaddle;
+		if (paddleType == PaddleType.RIGHT) paddle = game.RightPaddle;
+
+		if (paddle.Moving)
+		{
+			// Get the relative position between the paddle and ball
+			// and clamp it between -1 and 1
+			float relativePosition = (position.Y - paddle.Position) / paddle.Height;
+			relativePosition = Math.Clamp(relativePosition, -1f, 1f);
+			float angle = 0.5f * relativePosition;
+			
+			// Adjust the direction based on the angle
+        	float magnitude = (float)Math.Sqrt(direction.X * direction.X + direction.Y * direction.Y); // Calculate the magnitude of the direction vector
+        	direction.X = Math.Sign(direction.X) * (float)Math.Cos(angle) * magnitude;
+        	direction.Y = Math.Sign(direction.Y) * (float)Math.Sin(angle) * magnitude;
+    	}
+
+		// Move the ball off of the paddle to stop it from getting stuck
+		if (paddleType == PaddleType.LEFT) position.X += 5;
+		if (paddleType == PaddleType.RIGHT) position.X -= 5;
+
+		// Flip the direction to bounce the ball
 		direction.X = -direction.X;
 		speedMultiplier += 0.08f;
 

@@ -4,10 +4,12 @@ using SFML.Window;
 
 class Paddle
 {
+	public bool Moving;
 	public FloatRect Bounds;
+	public float Position;
+	public float Height = 200f;
+
 	private Game game;
-	private float position;
-	private float height = 200f;
 	private float width = 25f;
 	private RectangleShape sprite;
 	private float x;
@@ -21,7 +23,7 @@ class Paddle
 		this.paddleType = paddleType;
 
 		// Create the sprite
-		this.sprite = new RectangleShape(new Vector2f(width, height));
+		this.sprite = new RectangleShape(new Vector2f(width, Height));
 
 		// Set the position
 		if (paddleType == PaddleType.LEFT) this.x = 0;
@@ -43,19 +45,14 @@ class Paddle
 
 	public void ResetPosition()
 	{
-		this.position = (game.Window.Size.Y - height) / 2;
-		this.sprite.Position = new Vector2f(x, position);
+		this.Position = (game.Window.Size.Y - Height) / 2;
+		this.sprite.Position = new Vector2f(x, Position);
 	}
 
 	private void Movement()
 	{
-		/*
-		2 years ago. 45 degree.
-		mirror.
-		*/
-
 		// Movement stuff
-		float newPosition = position;
+		float newPosition = Position;
 		float movement = speed * game.DeltaTime;
 
 		// Get input depending on the paddle type
@@ -70,16 +67,20 @@ class Paddle
 			if(Keyboard.IsKeyPressed(Keyboard.Key.Down)) newPosition += movement;
 		}
 
+		// Check for if the paddle is moving
+		float velocity = (newPosition - Position) / game.DeltaTime;
+		Moving = velocity >= 1;
+
 		// Update the position
-		if (!Collision(newPosition)) this.position = newPosition;
-		this.sprite.Position = new Vector2f(x, position);
+		if (!Collision(newPosition)) this.Position = newPosition;
+		this.sprite.Position = new Vector2f(x, Position);
 		this.Bounds = sprite.GetGlobalBounds();
 	}
 
 	private bool Collision(float newPosition)
 	{
 		// Check for if the paddle is about to hit the window
-		if ((newPosition < 0) || (newPosition + height) > game.Window.Size.Y) return true;
+		if ((newPosition < 0) || (newPosition + Height) > game.Window.Size.Y) return true;
 
 		return false;
 	}
